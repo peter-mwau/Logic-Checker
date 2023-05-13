@@ -7,18 +7,20 @@ from django.views.decorators.csrf import csrf_exempt, csrf_protect
 
 @csrf_exempt
 def check(request):
-    if request.method == 'POST':
+    # if request.method == 'POST':
         form = LogiChecker(request.POST)
         if form.is_valid():
             userInput = form.cleaned_data.get("userInput")
+            output = form.cleaned_data.get("output")
             client = Client("https://jvictoria-logicchecker.hf.space/")
             result = client.predict(
 				userInput,	# str representing input in 'ここに訂正してほしい英語の作文を置いてください。そして「Submit」を押してください:' Textbox component
 				api_name="/predict"
                 )
             print(result)
-            return render(request, 'home.html', {'form': form})
+            formoutput = LogiChecker(initial={'output': output, 'userInput': userInput})
+            return render(request, 'home.html', {'form': formoutput})
         else:
-            return render(request, 'home.html', {'form': form})
-    return render(request, 'home.html')
+            return render(request, 'home.html', {'form': formoutput})
+    # return render(request, 'home.html', {'form':formoutput})
 
