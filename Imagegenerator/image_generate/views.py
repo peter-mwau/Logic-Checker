@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from . models import Records_log
 from . forms import LogiChecker
 from gradio_client import Client
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
@@ -19,6 +20,8 @@ def check(request):
                 )
             print(result)
             formoutput = LogiChecker(initial={'output': result, 'userInput': userInput})
+            r = Records_log(Prompt=userInput, Response=result)
+            r.save()
             return render(request, 'home.html', {'form': formoutput})
         else:
             return render(request, 'home.html', {'form': formoutput})
