@@ -18,7 +18,7 @@ def check(request):
 				userInput,	# str representing input in 'ここに訂正してほしい英語の作文を置いてください。そして「Submit」を押してください:' Textbox component
 				api_name="/predict"
                 )
-            print(result)
+            # print(result)
             formoutput = LogiChecker(initial={'output': result, 'userInput': userInput})
             r = Records_log(Prompt=userInput, Response=result)
             r.save()
